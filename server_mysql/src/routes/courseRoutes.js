@@ -1,13 +1,15 @@
-import express from 'express';
-import {updateCourse,createCourse,registerCourse} from '../controllers/course.controller.js';
+import express from "express";
+import { createCourse, getCourses, registerCourse } from "../controllers/courseController.js";
+import { createComment, getLeads, searchLead, updateLeadDetails } from "../controllers/leadController.js";
 
-// Create course API
+
 const router = express.Router();
-console.log("courseroutesfile")
-router.post('/', createCourse);
 
-// Update course details API
-// router.put('/:courseId', updateCourse);
-// router.post(':courseId/register', registerCourse);
+router.get("/", getCourses);
+router.post("/", createCourse);
+router.post("/:courseId/register", registerCourse);
+router.get("/:courseId/leads", getLeads);
+router.put("/:courseId/lead/:leadId", updateLeadDetails);
+router.get("/:courseId/searchLead", searchLead);
 
 export default router;

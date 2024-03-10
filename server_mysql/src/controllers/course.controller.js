@@ -1,45 +1,50 @@
-import Course from '../models/course.model.js';
+import Course from "../models/course.model.js";
+import Instructor from "../models/instructor.model.js";
+import Lead from "../models/lead.model.js";
 
-const createCourse = async (req, res) => {
-  console.log(req.body)
-  try {
-    const { instructorId, name, max_seats} = req.body;
-    const course = await Course.create({  name, max_seats, start_date : Date.now(),instructorId });
-    res.status(201).json(course);
-    return course;
-    console.log(req.body)
-  } catch (err) {
-    console.error('Error creating course:', err);
-    res.status(500).send('Internal Server Error');
-  }
+export const getCourses = async (req, res) => {
+    try {
+        console.log("getCourses")
+        const courses = await Course.findAll();
+        res.status(200).send(courses);
+    }
+    catch (error) {
+        res.status(400).send(error);
+    }
+}
+
+export const createCourse = async (req, res) => {
+    try {
+        const { instructorId } = req.params;
+        const currInstructor = await Instructor.findByPk(instructorId);
+        if (!currInstructor) {
+            return res.status(404).json({ message: "Instructor not found" });
+        }
+        const instructor = currInstructor.name;
+        let startDate = req.body.startDate;
+        console.log(startDate);
+        startDate = new Date(startDate).toISOString().slice(0, 19).replace('T', ' ');
+        const course = new Course({ ...req.body, instructorId, instructor, startDate });
+        await course.save();
+        res.status(201).send(course);
+    }
+    catch (error) {
+        console.log(error);
+        res.status(400).send(error);
+    }
 };
 
-const updateCourse = async (req, res) => {
-  try {
-    const courseId = req.params.courseId;
-    const { name, max_seats, start_date } = req.body;
-    await Course.update({ name, max_seats, start_date }, { where: { course_id: courseId } });
-    res.status(200).send('Course details updated successfully');
-  } catch (err) {
-    console.error('Error updating course details:', err);
-    res.status(500).send('Internal Server Error');
-  }
-};
+export const registerCourse = async (req, res) => {
+    const { courseId } = req.params;
 
-const registerCourse = async (req, res) => {
-  const courseId = parseInt(req.params.courseId);
-  const { name, email, phone_number, linkedin_profile } = req.body;
-  const lead = {
-      lead_id: lead.length + 1,
-      course_id: courseId,
-      name,
-      email,
-      phone_number,
-      linkedin_profile,
-      status: 'Pending'
-  };
-  lead.push(lead);
-  res.json(lead);
+    try {
+        const lead = await Lead.create({
+            courseId,
+            ...req.body,
+        });
+        res.status(201).json({ message: 'Registered for the course successfully', lead });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error registering for the course' });
+    }
 };
-
-export  {updateCourse, createCourse,registerCourse}

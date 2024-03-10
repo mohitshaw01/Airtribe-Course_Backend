@@ -1,21 +1,17 @@
 import express from "express";
-import { newInstructor , updateInstructor , getAllInstructors , getInstructorById  , deleteInstructor} from "../controllers/instructor.controller.js";
+import { createInstructor, getInstructors, getInstructorById, getInstructorCourses, updateCourseDetails } from "../controllers/instructor.controller.js";
+import { createCourse } from "../controllers/course.controller.js";
+import { createComment, getLeads } from "../controllers/lead.controller.js";
 
-const instructorRouter = express.Router();
+const router = express.Router();
 
-instructorRouter.get("/", (req, res) => {
-  res.status(200).json({ message: "Instructors router" });
-});
-console.log("instructor router")
-instructorRouter.post("/newInstructor", newInstructor);
-console.log("instructor router")
+router.get("/:id", getInstructorById);
+router.get("/", getInstructors);
+router.post("/", createInstructor);
+router.post("/:instructorId/course", createCourse);
+router.get("/:instructorId/courses", getInstructorCourses);
+router.put("/:instructorId/course/:courseId", updateCourseDetails);
+router.post("/:instructorId/course/:courseId/lead/:leadId/comment", createComment);
+export default router;
 
-instructorRouter.put("/updateInstructor/:id", updateInstructor);
 
-instructorRouter.get('/getall',  getAllInstructors);
-
-instructorRouter.get('/id/:id', getInstructorById);
-
-instructorRouter.delete('/delete/:id',deleteInstructor);
-
-export default instructorRouter;

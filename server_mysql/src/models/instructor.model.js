@@ -1,24 +1,28 @@
 import { DataTypes } from 'sequelize';
-import db from '../db/index.js';
+import db from '../config/database.js';
 
-const instructor = db.define('instructor', {
-  id: {
+const Instructor = db.define('Instructor', {
+  instructorId: {
     type: DataTypes.INTEGER,
+    autoIncrement: true,
     primaryKey: true,
-    autoIncrement: true // Use autoIncrement for primary key
   },
   name: {
-    type: DataTypes.STRING, // Correct data type for name field
-    allowNull: false
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  userName: {
+    type: DataTypes.STRING,
+    unique: true,
   },
   email: {
     type: DataTypes.STRING,
-    allowNull: false
+    unique: true,
   },
-  courses: {
-    type: DataTypes.TEXT, // Change data type to TEXT
-    allowNull: true // Set allowNull to true if courses can be null
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false,
   }
 });
 
-export default instructor;
+export default Instructor;

@@ -1,30 +1,32 @@
 import { DataTypes } from 'sequelize';
-import db from '../db/index.js';
-import Instructor from './instructor.model.js'; // Import Instructor model
+import db from '../config/database.js';
 
 const Course = db.define('Course', {
+  courseId: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
   name: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
   },
-  max_seats: {
-    type: DataTypes.INTEGER,
-    allowNull: false
-  },
-  start_date: {
-    type: DataTypes.DATE,
-    allowNull: true
-  },
-  instructorId: { // Correct foreign key field name
+  maxSeats: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    references: {
-      model: Instructor,
-      key: 'id'
-    }
-  }
+  },
+  startDate: {
+    type: DataTypes.DATE,
+    allowNull: false,
+  },
+  instructor: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  instructorId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
 });
-
-Course.belongsTo(Instructor, { foreignKey: 'instructorId' });
 
 export default Course;

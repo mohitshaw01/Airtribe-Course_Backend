@@ -1,40 +1,97 @@
-import Lead from '../models/lead.model.js';
+import Lead from "../models/lead.model.js";
+import Comment from "../models/comment.model.js";
 
-const registerLead = async (req, res) => {
-  try {
-    const { course_id, name, email, phone_number, linkedin_profile } = req.body;
-    const lead = await Lead.create({ course_id, name, email, phone_number, linkedin_profile });
-    res.status(201).json(lead);
-  } catch (err) {
-    console.error('Error registering for course:', err);
-    res.status(500).send('Internal Server Error');
-  }
+
+export const getLeads = async (req, res) => {
+    const { courseId } = req.params;
+    try {
+        const leads = await Lead.findAll({
+            where: {
+                courseId,
+            },
+        });
+        res.status(200).send(leads);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error getting leads' });
+    }
 };
 
-const updateLead = async (req, res) => {
-  try {
-    const leadId = req.params.leadId;
-    const { status } = req.body;
-    await Lead.update({ status }, { where: { lead_id: leadId } });
-    res.status(200).send('Lead status updated successfully');
-  } catch (err) {
-    console.error('Error updating lead status:', err);
-    res.status(500).send('Internal Server Error');
-  }
-};
-
-const searchLeads = async (req, res) => {
-  try {
+export const searchLead = async (req, res) => {
+    const { courseId } = req.params;
     const { name, email } = req.query;
-    let whereClause = {};
-    if (name) whereClause.name = name;
-    if (email) whereClause.email = email;
-    const leads = await Lead.findAll({ where: whereClause });
-    res.status(200).json(leads);
-  } catch (err) {
-    console.error('Error searching leads:', err);
-    res.status(500).send('Internal Server Error');
-  }
+    try {
+        if (name) {
+            const leads = await Lead.findAll({
+                where: {
+                    courseId,
+                    name,
+                },
+            });
+            res.status(200).send(leads);
+        }
+        else if (email) {
+            const leads = await Lead.findAll({
+                where: {
+                    courseId,
+                    email,
+                },
+            });
+            res.status(200).send(leads);
+        }
+        else {
+            res.status(400).json({ error: 'Invalid search query' });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error getting leads' });
+    }
 };
 
-export default { registerLead, updateLead, searchLeads }
+export const updateLeadDetails = async (req, res) => {
+    const { courseId, leadId } = req.params;
+    try {
+        const lead = await Lead.findOne({
+            where: {
+                courseId,
+                leadId,
+            },
+        });
+        if (!lead) {
+            res.status(404).json({ error: 'Lead not found' });
+        }
+        const { status } = req.body;
+        const updatedLead = await lead.update({
+            status
+        });
+        res.status(200).send(updatedLead);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error updating lead' });
+    }
+}
+
+export const createComment = async (req, res) => {
+    const { courseId, leadId,instructorId } = req.params;
+    try {
+        const lead = await Lead.findOne({
+            where: {
+                courseId,
+                leadId,
+            },
+        });
+        if (!lead) {
+            res.status(404).json({ error: 'Lead not found' });
+        }
+        const { text } = req.body;
+        const comment = await Comment.create({
+            text,
+            leadId,
+            instructorId,
+        });
+        res.status(201).send(comment);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error creating comment' });
+    }
+}

@@ -1,7 +1,5 @@
 // import express from 'express';
 import courseRoutes from './routes/courseRoutes.js';
-import leadRoutes from './routes/leadRoutes.js';
-import commentRoutes from './routes/commentRoutes.js';
 import instructorRouter from './routes/instructorRoutes.js';
 import express from 'express';
 import db from './db/index.js';
@@ -23,8 +21,6 @@ app.get('/', (req, res) => {
 });
 // //
 app.use('/courses', courseRoutes);
-// app.use('/leads', leadRoutes);
-// app.use('/comments', commentRoutes);
 app.use("/instructors", instructorRouter);
 
 // Start the Express server

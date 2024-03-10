@@ -1,26 +1,41 @@
-import { DataTypes } from 'sequelize'; // Correct import statement for DataTypes
-import db from '../db/index.js';
+import { DataTypes } from 'sequelize';
+import db from '../config/database.js';
+import Course from './Course.js';
 
 const Lead = db.define('Lead', {
+  leadId: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
   name: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
   },
   email: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true
   },
-  phone_number: {
-    type: DataTypes.STRING
+  phone: {
+    type: DataTypes.STRING,
+    allowNull: false,
   },
-  linkedin_profile: {
-    type: DataTypes.STRING
+  linkedinProfile: {
+    type: DataTypes.STRING,
+    allowNull: false,
   },
   status: {
-    type: DataTypes.ENUM('Pending', 'Accepted', 'Rejected', 'Waitlisted'),
-    defaultValue: 'Pending'
-  }
+    type: DataTypes.ENUM('Accepted', 'Rejected', 'Waitlisted', 'Pending'),
+    defaultValue: 'Pending',
+  }, 
+  courseId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
 });
+
+// Define Associations
+Lead.belongsTo(Course, { foreignKey: 'courseId' });
+Course.hasMany(Lead, { foreignKey: 'courseId' });
 
 export default Lead;
