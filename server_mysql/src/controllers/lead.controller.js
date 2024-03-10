@@ -1,5 +1,6 @@
 import Lead from "../models/lead.model.js";
 import Comment from "../models/comment.model.js";
+import Course from '../models/course.model.js'
 
 
 export const getLeads = async (req, res) => {
@@ -95,3 +96,39 @@ export const createComment = async (req, res) => {
         res.status(500).json({ error: 'Error creating comment' });
     }
 }
+
+export const readComments = async (req, res) => {
+    const { instructorId ,courseId, leadId } = req.params;
+    try {
+        const comments = await Comment.findAll({
+            where: {
+                instructorId,
+                leadId,
+            },
+        });
+        res.status(200).send(comments);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error getting comments' });
+    }
+}
+
+export const createLead = async (req, res) => {
+    const { courseId } = req.params;
+    try {
+        // if course id does not exist return error
+        const course = await Course.findByPk(courseId);
+        if (!course) {
+            return res.status(404).json({ message: "Course not found" });
+        }
+        const lead = await Lead.create({
+            courseId,
+            ...req.body,
+        });
+        res.status(201).json({ message: 'Registered for the course successfully', lead });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error registering for the course' });
+    }
+}
+
