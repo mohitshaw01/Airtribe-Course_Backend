@@ -13,7 +13,7 @@ router.get("/:instructorId/courses", getInstructorCourses);
 router.put("/:instructorId/course/:courseId", updateCourseDetails);
 router.post("/:instructorId/course/:courseId/lead/:leadId/comment", createComment);
 
-router.get("/:instructorId/course/:courseId/lead/:leadId/readComments", readComments);
+router.get("/:instructorId/lead/:leadId/readComments", readComments);
 export default router;
 
 

@@ -17,7 +17,7 @@ db.sync()
   });
 
 app.get('/', (req, res) => {  
-  res.send('Welcome to the Express Server');
+  res.send('Welcome to the Express Server the server is up and running!');
 });
 // //
 app.use('/courses', courseRoutes);

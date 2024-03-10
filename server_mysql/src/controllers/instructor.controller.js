@@ -40,6 +40,7 @@ export const createInstructor = async (req, res) => {
 };
 
 export const getInstructorCourses = async (req, res) => {
+    console.log(req.params);
     try {
         const instructor = await Instructor.findByPk(req.params.instructorId);
         if (!instructor) {
@@ -47,7 +48,7 @@ export const getInstructorCourses = async (req, res) => {
         }
         const courses = await course.findAll({
             where: {
-                instructorId: req.params.id
+                instructorId: req.params.instructorId // Corrected
             }
         });
         res.status(200).send(courses);
@@ -57,6 +58,7 @@ export const getInstructorCourses = async (req, res) => {
         res.status(400).send(error);
     }
 }
+
 
 export const updateCourseDetails = async (req, res) => {
     try {

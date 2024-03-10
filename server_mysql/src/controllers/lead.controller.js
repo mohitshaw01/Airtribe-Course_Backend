@@ -98,12 +98,11 @@ export const createComment = async (req, res) => {
 }
 
 export const readComments = async (req, res) => {
-    const { instructorId ,courseId, leadId } = req.params;
+    const { instructorId , leadId } = req.params;
     try {
         const comments = await Comment.findAll({
             where: {
-                instructorId,
-                leadId,
+                instructorId ,leadId,
             },
         });
         res.status(200).send(comments);
@@ -113,22 +112,4 @@ export const readComments = async (req, res) => {
     }
 }
 
-export const createLead = async (req, res) => {
-    const { courseId } = req.params;
-    try {
-        // if course id does not exist return error
-        const course = await Course.findByPk(courseId);
-        if (!course) {
-            return res.status(404).json({ message: "Course not found" });
-        }
-        const lead = await Lead.create({
-            courseId,
-            ...req.body,
-        });
-        res.status(201).json({ message: 'Registered for the course successfully', lead });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Error registering for the course' });
-    }
-}
 
