@@ -6,9 +6,9 @@ const sequelize = new Sequelize({
   dialect: 'mysql',
   host: 'sql6.freemysqlhosting.net',
   port: 3306,
-  username: 'sql6689651',
-  password: 'YAtl8BFBcC',
-  database: 'sql6689651'
+  username: 'sql6690048',
+  password: 'AJTWmZ79qD',
+  database: 'sql6690048'
 });
 
 export default sequelize;

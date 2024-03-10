@@ -1,6 +1,6 @@
 import express from "express";
-import { createCourse, getCourses, registerCourse } from "../controllers/courseController.js";
-import { createComment, getLeads, searchLead, updateLeadDetails } from "../controllers/leadController.js";
+import { createCourse, getCourses, registerCourse } from "../controllers/course.controller.js";
+import { createComment, getLeads, searchLead, updateLeadDetails } from "../controllers/lead.controller.js";
 
 
 const router = express.Router();

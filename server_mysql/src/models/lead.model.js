@@ -1,6 +1,6 @@
 import { DataTypes } from 'sequelize';
-import db from '../config/database.js';
-import Course from './Course.js';
+import db from '../db/index.js';
+import Course from './course.model.js';
 
 const Lead = db.define('Lead', {
   leadId: {

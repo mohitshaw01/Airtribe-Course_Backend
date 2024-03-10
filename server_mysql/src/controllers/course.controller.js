@@ -15,7 +15,8 @@ export const getCourses = async (req, res) => {
 
 export const createCourse = async (req, res) => {
     try {
-        const { instructorId } = req.params;
+        // const { instructorId } = req.params;
+        const { instructorId } = req.body;
         const currInstructor = await Instructor.findByPk(instructorId);
         if (!currInstructor) {
             return res.status(404).json({ message: "Instructor not found" });

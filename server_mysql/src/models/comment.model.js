@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
-import db from '../config/database.js';
-import Lead from './Lead.js';
-import Instructor from './Instructor.js';
+import db from '../db/index.js';
+import Lead from './lead.model.js';
+import Instructor from './instructor.model.js';
 
 const Comment = db.define('Comment', {
   commentId: {

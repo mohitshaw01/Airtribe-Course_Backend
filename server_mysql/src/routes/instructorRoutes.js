@@ -6,8 +6,8 @@ import { createComment, getLeads } from "../controllers/lead.controller.js";
 const router = express.Router();
 
 router.get("/:id", getInstructorById);
-router.get("/", getInstructors);
-router.post("/", createInstructor);
+router.get("/", getInstructors); // get requrest
+router.post("/", createInstructor); // post request
 router.post("/:instructorId/course", createCourse);
 router.get("/:instructorId/courses", getInstructorCourses);
 router.put("/:instructorId/course/:courseId", updateCourseDetails);
