@@ -11,4 +11,4 @@ const addComment = async (req, res) => {
   }
 };
 
-export default addComment
+export {addComment}

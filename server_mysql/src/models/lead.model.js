@@ -1,4 +1,4 @@
-import DataTypes from 'sequelize';
+import { DataTypes } from 'sequelize'; // Correct import statement for DataTypes
 import db from '../db/index.js';
 
 const Lead = db.define('Lead', {

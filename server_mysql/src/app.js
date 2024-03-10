@@ -1,38 +1,34 @@
+// import express from 'express';
+import courseRoutes from './routes/courseRoutes.js';
+import leadRoutes from './routes/leadRoutes.js';
+import commentRoutes from './routes/commentRoutes.js';
+import instructorRouter from './routes/instructorRoutes.js';
 import express from 'express';
-// import courseRoutes from './routes/courseRoutes.js';
-// import leadRoutes from './routes/leadRoutes.js';
-// import commentRoutes from './routes/commentRoutes.js';
 import db from './db/index.js';
 
 const app = express();
+app.use(express.json());
 
-db.getConnection((err, connection) => {
-    if (err) {
-        console.error('Error connecting to database:', err);
-    } else {
-        console.log('Connected to MySQL database');
-        connection.release();
-    }
-}); 
+// Sync all defined models to the database
+db.sync()
+  .then(() => {
+    console.log('All models were synchronized successfully.');
+  })
+  .catch((err) => {
+    console.error('Unable to synchronize the models:', err);
+  });
 
-//
+app.get('/', (req, res) => {  
+  res.send('Welcome to the Express Server');
+});
+// //
 app.use('/courses', courseRoutes);
 // app.use('/leads', leadRoutes);
 // app.use('/comments', commentRoutes);
-
-// Example route to fetch data from the database
-app.get('/users', (req, res) => {
-    db.query('SELECT * FROM users', (error, results) => {
-        if (error) {
-            res.status(500).send('Error retrieving users from database');
-        } else {
-            res.json(results);
-        }
-    });
-});
+app.use("/instructors", instructorRouter);
 
 // Start the Express server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });

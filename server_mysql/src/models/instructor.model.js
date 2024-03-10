@@ -1,19 +1,23 @@
-// write instructor model here
-import DataTypes from 'sequelize';
+import { DataTypes } from 'sequelize';
 import db from '../db/index.js';
 
 const instructor = db.define('instructor', {
-  instructor_id: {
+  id: {
     type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true // Use autoIncrement for primary key
+  },
+  name: {
+    type: DataTypes.STRING, // Correct data type for name field
     allowNull: false
   },
-  instructor_name: {
-    type: DataTypes.INTEGER,
+  email: {
+    type: DataTypes.STRING,
     allowNull: false
   },
   courses: {
-    type: DataTypes.ARRAY(DataTypes.INTEGER), // id of courses
-    allowNull: false
+    type: DataTypes.TEXT, // Change data type to TEXT
+    allowNull: true // Set allowNull to true if courses can be null
   }
 });
 
